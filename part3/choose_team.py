@@ -13,7 +13,7 @@ def load_people(filename):
     with open(filename, "r") as file:
         for line in file:
             l = line.split()
-            people[l[0]] = [ float(i) for i in l[1:] ] 
+            people[l[0]] = [ float(i) for i in l[1:] ]
     return people
 
 
@@ -23,14 +23,26 @@ def load_people(filename):
 #  by adding a fraction of the last person.
 #
 def approx_solve(people, budget):
+    '''for i in range(1,n+1):
+        for c in range(1,budget):
+            maxValWithoutCurr = mat[i-1][c]
+            maxValWithCurr = 0
+            weightOfCurr = wt[i-1]
 
+            if c >= weightOfCurr:
+                maxValWithCurr = val[i-1]
+                remainingCapacity = c - weightOfCurr
+                maxValWithCurr += mat[i-1][remainingCapacity]
+            mat[i][c] = max(maxValWithoutCurr,maxValWithCurr)
+    return mat[n][len(mat[0])]
+
+  '''
     solution=()
-    for (person, (skill, cost)) in sorted(people.items(), key=lambda x: x[1][0]/x[1][1]):
+    #its sorting in ascending order, therefore used reverse = true
+    for (person, (skill, cost)) in sorted(people.items(), key=lambda x: x[1][0], reverse = True):
         if budget - cost > 0:
             solution += ( ( person, 1), )
             budget -= cost
-        else:
-            return solution + ( ( person, budget/cost ), )
 
     return solution
 
@@ -42,6 +54,7 @@ if __name__ == "__main__":
 
     budget = float(sys.argv[2])
     people = load_people(sys.argv[1])
+    n = len(people)
     solution = approx_solve(people, budget)
 
     print("Found a group with %d people costing %f with total skill %f" % \
