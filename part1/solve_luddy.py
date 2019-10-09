@@ -218,13 +218,13 @@ if __name__ == "__main__":
 
     print("Solving...")
     st = time.time()
-    #route = solve(start_state,sys.argv[2])
-    route1 = solve_idastar(start_state,sys.argv[2])
+    route = solve(start_state,sys.argv[2])
+    #route1 = solve_idastar(start_state,sys.argv[2])
     et = time.time()
     print(et-st)
     #print(route)
-    print(route1)
-    #print("Solution found in " + str(len(route)) + " moves:" + "\n" + route)
+    #print(route1)
+    print("Solution found in " + str(len(route)) + " moves:" + "\n" + route)
 
     #else:
     #   print("Inf")
