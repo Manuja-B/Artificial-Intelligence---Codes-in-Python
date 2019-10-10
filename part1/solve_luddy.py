@@ -168,8 +168,6 @@ if __name__ == "__main__":
         raise(Exception("Error: expected 2 arguments"))
 
     start_state = []
-    file_path = "C:/Users/manuj/Desktop/Courses/AI/msbandal-satvenk-djhawar-a1-master/msbandal-satvenk-djhawar-a1-master/part1/"
-    os.chdir(file_path)
     with open(sys.argv[1], 'r') as file:
         for line in file:
             start_state += [ int(i) for i in line.split() ]
