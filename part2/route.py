@@ -10,6 +10,7 @@ import math
 
 # Reference
 # Code taken from: https://stackoverflow.com/questions/19412462/getting-distance-between-two-points-based-on-latitude-longitude
+# To calculate the distance using lat-lon
 def calculate_distance(c1,c2):
 
     if c1[0] == 0:
@@ -38,6 +39,7 @@ def calculate_distance(c1,c2):
 def calculate_dis(c1,c2):
     return math.sqrt((float(c1[0]) -float(c2[0]))**2 + (float(c1[1]) -float(c2[1]))**2)
 
+# Creating dictionary using city-gps
 def complete_list(rSeg,city_gps_updated):
     temp = city_gps_updated
 
@@ -67,16 +69,17 @@ def complete_list(rSeg,city_gps_updated):
 def priority_queue(fringe,c_fun):
 
     # For priority queue
-    min_val = fringe[0][c_fun] + fringe[0][6]
+    min_val = fringe[0][c_fun] + 0.7*fringe[0][6]
     min_idx = 0
 
     for i in range(len(fringe)):
-        temp = fringe[i][c_fun] + fringe[i][6]
+        temp = fringe[i][c_fun] + 0.7*fringe[i][6]
         if temp < min_val:
             min_val = temp
             min_idx = i
     return min_idx
 
+# Miles per Gallon
 def calculate_MPG(velocity):
     temp = int(velocity)/150
     mpg = 400*temp*(pow((1-temp),4))
@@ -100,7 +103,12 @@ def successors(rSeg,current_city):
 
     return succ
 
+# *************************************************************************************************************
 def solve(start_city, end_city, cost_function):
+
+    # Just to resolve the double inverted for Y_city {only case in the data}
+    if start_city == 'Y_City,_Arkansas':
+        start_city = '"Y"_City,_Arkansas'
 
     lat = []
     lon = []
@@ -123,7 +131,7 @@ def solve(start_city, end_city, cost_function):
             l = line.split()
             city_gps[l[0]] = ([l[1],l[2]])
 
-    # creating dictionary from the input file
+    # creating dictionary for each city from the input file
     rSeg = {}
 
     with open('road-segments.txt', 'r') as file:
@@ -140,9 +148,13 @@ def solve(start_city, end_city, cost_function):
             else:
                 rSeg[temp[1]] = ([[temp[0],temp[2],temp[3],temp[4]]])
 
+
+    # dictionary of all cities
     city_gps = complete_list(rSeg,city_gps)
 
+    #latitude longidude distance
     latlon_total_distance = calculate_distance(city_gps[start_city],city_gps[end_city])
+
 
     fringe = [(start_city,0,0,0,0,"",latlon_total_distance)]
 
@@ -150,9 +162,11 @@ def solve(start_city, end_city, cost_function):
 
     while len(fringe) > 0:
         
+        # minimum index according to the priority of the given variant
         min_idx = priority_queue(fringe,c_fun)
 
         (city,segments,distance,time,gallons,path,latlon_distance) = fringe.pop(min_idx)
+        
         visited.append(city)
 
         if is_goal(city,end_city):
@@ -165,6 +179,7 @@ def solve(start_city, end_city, cost_function):
             if succ[i][0] in visited:
                 continue
 
+            # bunch of variables
             temp = []
             c_distance = int(succ[i][1])
             c_velocity = int(succ[i][2])
@@ -174,6 +189,7 @@ def solve(start_city, end_city, cost_function):
             temp.append(time+(c_distance/c_velocity))
             temp.append(gallons+c_distance/calculate_MPG(c_velocity))
 
+            # To check if already shorter path is present in the fringe
             for k in range(len(fringe)):
                 if fringe[k][0] == succ[i][0]:
                     if fringe[k][c_fun] > temp[c_fun-1]:
@@ -181,9 +197,13 @@ def solve(start_city, end_city, cost_function):
                         break
             lat.append(city_gps[succ[i][0]][0])
             lon.append(city_gps[succ[i][0]][1])
+
+
             fringe.insert(0,(succ[i][0],temp[0],temp[1],temp[2],temp[3],path+city+" ",c_latlon_distance))
 
     return False
+
+# *****************************************************************************************************************
 
 # test cases
 if __name__ == "__main__":
