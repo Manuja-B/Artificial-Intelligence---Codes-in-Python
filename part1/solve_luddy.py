@@ -123,28 +123,41 @@ def is_goal(state):
 
 # ***********************************************************************************************
 # The solver! - using A* Search
-def solve(initial_board,variant):
-    fringe = [ (initial_board, "") ]
+def solve(initial_board):
 
-    closed = []
-    
+    closed = set()
+
     q = Q.PriorityQueue()
-    q.put(((misplaced_tiles(initial_board) + 0), initial_board, ""))
-    #q.put((initial_board, "",(manhattan(initial_board) + permutation_inversion(initial_board) + misplaced_tiles(initial_board) + 0)))
+    cost = 0
+    q.put((misplaced_tiles(initial_board), initial_board, "", 0))
+
 
     while not q.empty():
-        (cost, state, route_so_far) = q.get()
-        
-        closed.append(state)
+        (h, state, route_so_far, cost) = q.get()
+        cost = cost + 1
+
 
         if is_goal(state):
             return (route_so_far)
 
         for (succ, move) in successors(state):
-            if succ in closed: continue
-            q.put((misplaced_tiles(succ) + len(move), succ, route_so_far + move))
+
+            if succ not in closed:
+                closed.add(succ)
+                q.put((misplaced_tiles(succ) + len(move) + cost, succ, route_so_far + move, cost))
+
+            # for k in range(len(fringe)):
+            # if succ == fringe[k][0]:
+            # if len(move) < len(fringe[k][1]):
+            # fringe.remove((succ,fringe[k][1]))
+            # break
+            # fringe.insert(0, (succ, route_so_far + move))
 
     return "Inf"
+
+
+
+
 
 
 # **********************************************************************************************
