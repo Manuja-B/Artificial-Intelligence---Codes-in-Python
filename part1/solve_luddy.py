@@ -123,7 +123,7 @@ def is_goal(state):
 
 # ***********************************************************************************************
 # The solver! - using A* Search
-def solve(initial_board):
+def solve(initial_board,variant):
 
     closed = set()
 
