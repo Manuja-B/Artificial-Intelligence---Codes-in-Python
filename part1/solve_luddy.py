@@ -248,13 +248,15 @@ if __name__ == "__main__":
     print("Start state: \n" +"\n".join(printable_board(start_state)))
 
     print("Solving...")
-    # ##### A* #######
-    route = solve(start_state,sys.argv[2])
+    if solvability(start_state):
+        # ##### A* #######
+        route = solve(start_state,sys.argv[2])
 
-    # ##### IDA* #######
-    #route = solve_idastar(start_state,sys.argv[2])
-    if route == 'Inf':
-        print(route)
+        # ##### IDA* #######
+        #route = solve_idastar(start_state,sys.argv[2])
+        if route == 'Inf':
+            print(route)
+        else:
+            print("Solution found in " + str(len(route)) + " moves:" + "\n" + route)
     else:
-        print("Solution found in " + str(len(route)) + " moves:" + "\n" + route)
-
+        print("Inf")
