@@ -27,16 +27,16 @@ In the given code, firstly it works only for &quot;Original&quot; variant which 
 - IDA\* search algo(with depth 4)
 
 1. Insert the starting state of the board into the fringe.
-2. Initialize an empty set, &#39;closed&#39;. and initialize cost to zero.
+2. Initialize an empty set, &#39;closed&#39;.
 3. Initialize an empty Priority Queue &#39; q &#39;.
-4. Insert a set containing the no. of misplaced tiles of the initial board ( which is the cost incurred so far), the state of the initial board, and the steps so far (which is currently an empty path) and 0 into q.
+4. Insert a set containing the no. of misplaced tiles of the initial board ( which is the cost incurred so far), the state of the initial board, and the steps so far (which is currently an empty path) into q.
 5. Repeat steps 6 to 12 while q is not empty.
 6. From q pop out the current cost, the current state and the steps taken so far.
-7. Increment the value of cost by 1
-7. If the state equals the goal state, return the steps taken so far.
-8. For each successor in the list of successors of the current state, repeat steps 10 and 11.
-10. If the successor is  not in closed, add the successor to the closed set
-11. Insert into q, a set containing the sum of no. of ( misplaced tiles in the successor, the no. of steps taken so far and cost of moves), the state of the successor and the steps taken so far, cost.
+7. Append closed with the state which is popped.
+8. If the state equals the goal state, return the steps taken so far.
+9. For each successor in the list of successors of the current state, repeat steps 10 and 11.
+10. If the successor is  in closed, continue
+11. Insert into q, a set containing the sum of no. of ( misplaced tiles in the successor, the no. of steps taken so far), the state of the successor and the steps taken so far.
 12. If q becomes empty, return &quot;Inf.
 
 Both the algorithms were implemented using PriorityQueue, but there seems to be some logic error in the thinking as they were not converging for &quot;Luddy&quot; move fast. In A\* algo, to find the solution using Luddy variant it was taking over 1000secs, which is true because even when the A\* is fast, it alone cannot find the solution as the 15- tile puzzle has a huge state-space. So, we read over the internet and came across with this famous paper: [https://www.aaai.org/Papers/JAIR/Vol22/JAIR-2209.pdf](https://www.aaai.org/Papers/JAIR/Vol22/JAIR-2209.pdf)which explains and compares best techniques to solve the 15-tile puzzle. After searching more on the net, we find out that the best and fastest way to solve the problem is through using the IDA\* algo with pattern-database heuristic. We implemented the IDA\* algorithm, but the problem with that was it gets emptied very fast, and the result is Inf for Luddy move.
