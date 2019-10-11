@@ -1,6 +1,7 @@
 #!/usr/local/bin/python3
 # solve_luddy.py : Sliding tile puzzle solver
 #
+#
 # Code by: [PLEASE PUT Divyanshu Jhawar-djhawar, Manuja Bandal-msbandal & Sathyan-satvenk ]
 #
 # Based on skeleton code by D. Crandall, September 2019
@@ -123,27 +124,26 @@ def is_goal(state):
 # ***********************************************************************************************
 # The solver! - using A* Search
 def solve(initial_board,variant):
+    fringe = [ (initial_board, "") ]
 
-    closed = set()
-
+    closed = []
+    
     q = Q.PriorityQueue()
-    cost = 0
-    q.put((misplaced_tiles(initial_board), initial_board, "", 0))
-
+    q.put(((misplaced_tiles(initial_board) + 0), initial_board, ""))
+    #q.put((initial_board, "",(manhattan(initial_board) + permutation_inversion(initial_board) + misplaced_tiles(initial_board) + 0)))
 
     while not q.empty():
-        (h, state, route_so_far, cost) = q.get()
-        cost = cost + 1
-
+        (cost, state, route_so_far) = q.get()
+        
+        closed.append(state)
 
         if is_goal(state):
             return (route_so_far)
 
         for (succ, move) in successors(state):
+            if succ in closed: continue
+            q.put((misplaced_tiles(succ) + len(move), succ, route_so_far + move))
 
-            if succ not in closed:
-                closed.add(succ)
-                q.put((misplaced_tiles(succ) + len(move) + cost, succ, route_so_far + move, cost))
     return "Inf"
 
 
@@ -248,13 +248,16 @@ if __name__ == "__main__":
 
     print("Start state: \n" +"\n".join(printable_board(start_state)))
 
-    print("Solving...")
-    # ##### A* #######
-    route = solve(start_state,sys.argv[2])
+    print("Solving....")
+    if solvability(start_state):
+        # ##### A* #######
+        route = solve(start_state,sys.argv[2])
 
-    # ##### IDA* #######
-    #route = solve_idastar(start_state,sys.argv[2])
-    if route == 'Inf':
-        print(route)
+        # ##### IDA* #######
+        #route = solve_idastar(start_state,sys.argv[2])
+        if route == 'Inf':
+            print(route)
+        else:
+            print("Solution found in " + str(len(route)) + " moves:" + "\n" + route)
     else:
-        print("Solution found in " + str(len(route)) + " moves:" + "\n" + route)
+        print("Inf")
