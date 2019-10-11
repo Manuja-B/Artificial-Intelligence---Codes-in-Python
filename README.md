@@ -26,18 +26,18 @@ In the given code, firstly it works only for &quot;Original&quot; variant which 
 - A\* search(using algo 3)
 - IDA\* search algo(with depth 4)
 
-1. 1) Insert the starting state of the board into the fringe.
-2. 2)Initialize an empty array, &#39;closed&#39;.
-3. 3)Initialize an empty Priority Queue &#39; q &#39;.
-4. 4)Insert a set containing the no. of misplaced tiles of the initial board ( which is the cost incurred so far), the state of the initial board, and the steps so far (which is currently an empty path) into q.
-5. 5)Repeat steps 6 to 12 while q is not empty.
-6. 6)From q pop out the current cost, the current state and the steps taken so far.
-7. 7)Insert the current state into closed.
-8. 8)If the state equals the goal state, return the steps taken so far.
-9. 9)For each successor in the list of successors of the current state, repeat steps 10 and 11.
-10. 10) If the successor is in closed, skip the successor.
-11. 11) Insert into q, a set containing the sum of no. of misplaced tiles in the successor and the no. of steps taken so far, the state of the successor and the steps taken so far.
-12. 12) If q becomes empty, return &quot;Inf.
+1. Insert the starting state of the board into the fringe.
+2. Initialize an empty array, &#39;closed&#39;.
+3. Initialize an empty Priority Queue &#39; q &#39;.
+4. Insert a set containing the no. of misplaced tiles of the initial board ( which is the cost incurred so far), the state of the initial board, and the steps so far (which is currently an empty path) into q.
+5. Repeat steps 6 to 12 while q is not empty.
+6. From q pop out the current cost, the current state and the steps taken so far.
+7. Insert the current state into closed.
+8. If the state equals the goal state, return the steps taken so far.
+9. For each successor in the list of successors of the current state, repeat steps 10 and 11.
+10. If the successor is in closed, skip the successor.
+11. Insert into q, a set containing the sum of no. of misplaced tiles in the successor and the no. of steps taken so far, the state of the successor and the steps taken so far.
+12. If q becomes empty, return &quot;Inf.
 
 Both the algorithms were implemented using PriorityQueue, but there seems to be some logic error in the thinking as they were not converging for &quot;Luddy&quot; move fast. In A\* algo, to find the solution using Luddy variant it was taking over 1000secs, which is true because even when the A\* is fast, it alone cannot find the solution as the 15- tile puzzle has a huge state-space. So, we read over the internet and came across with this famous paper: [https://www.aaai.org/Papers/JAIR/Vol22/JAIR-2209.pdf](https://www.aaai.org/Papers/JAIR/Vol22/JAIR-2209.pdf)which explains and compares best techniques to solve the 15-tile puzzle. After searching more on the net, we find out that the best and fastest way to solve the problem is through using the IDA\* algo with pattern-database heuristic. We implemented the IDA\* algorithm, but the problem with that was it gets emptied very fast, and the result is Inf for Luddy move.
 
@@ -81,17 +81,17 @@ Here, 0.7 term is just experimental, it could be any number. We were just gettin
 
 Algorithm:
 
-1. 1)Create rSeg dictionary, that has information cities connected to other.
-2. 2)Use the rSeg dict, to create city\_gps data, to compute the missing latitude-longitude values.
-3. 3)Create a fringe and initialize it with lat-lon distance b/w start\_city and goal\_city
-4. 4)Pop the element from the fringe that has most priority.
-5. 5)Check if it is in goal state. If yes, then return.
-6. 6)Look for successors of the popped state.
-7. 7)For each successor, check if they are present in visited, if yes then ignore
-8. 8)Check if the successor is already present in fringe.
-9. 9)If yes, update with the minimum path.
-10. 10)If no, insert in the fringe
-11. 11)Continue 4-10 till either we got the solution of fringe becomes empty
+1. Create rSeg dictionary, that has information cities connected to other.
+2. Use the rSeg dict, to create city\_gps data, to compute the missing latitude-longitude values.
+3. Create a fringe and initialize it with lat-lon distance b/w start\_city and goal\_city
+4. Pop the element from the fringe that has most priority.
+5. Check if it is in goal state. If yes, then return.
+6. Look for successors of the popped state.
+7. For each successor, check if they are present in visited, if yes then ignore
+8. Check if the successor is already present in fringe.
+9. If yes, update with the minimum path.
+10. If no, insert in the fringe
+11. Continue 4-10 till either we got the solution of fringe becomes empty
 
 
 
@@ -117,11 +117,11 @@ The concept of branch and bound algorithm is that, it looks for its subtree and 
 
 Algo:
 
-1. (1)Sort the given array according to skill to rate ratio.
-2. (2)Create an empty queue
-3. (3)Create root node, that will be used to traverse the tree.
-4. (4)Now, for each successor of the given node, check if their bound is greater than the current profit.
-5. (5)To check the bound use the function find\_bound, which calculates the left and right bounds.
-6. (6)If, no just ignore them
-7. (7)If yes, add them to the queue
-8. (8)Repeat (4) to (7) until converge
+1. Sort the given array according to skill to rate ratio.
+2. Create an empty queue
+3. Create root node, that will be used to traverse the tree.
+4. Now, for each successor of the given node, check if their bound is greater than the current profit.
+5. To check the bound use the function find\_bound, which calculates the left and right bounds.
+6. If, no just ignore them
+7. If yes, add them to the queue
+8. Repeat (4) to (7) until converge
