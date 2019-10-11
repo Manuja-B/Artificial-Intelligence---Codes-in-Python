@@ -49,7 +49,7 @@ Apart, from these experiments we tried various combinations on heuristics as wel
 
 Also, we read somewhere over the internet, providing more weights to the tiles which are at their place, might solve the problem fast.
 
-We are getting results for &quot;luddy&quot; moves but it doesn&#39;t seem to be optimal.
+We are getting results for &quot;luddy&quot;.
 
 **Part 2: Road trip!-**
 
